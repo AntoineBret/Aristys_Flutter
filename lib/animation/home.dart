@@ -6,23 +6,13 @@ import 'package:flutter/rendering.dart';
 import 'package:aristys_app/sections/sections.dart';
 import 'widgets.dart';
 
-const Color _kAppBackgroundColor = Color(0xFF353662);
+const Color _kAppBackgroundColor = Color(0xFF1A237E);
 const Duration _kScrollDuration = Duration(milliseconds: 400);
 const Curve _kScrollCurve = Curves.fastOutSlowIn;
 
-// This app's contents start out at _kHeadingMaxHeight and they function like
-// an appbar. Initially the appbar occupies most of the screen and its section
-// headings are laid out in a column. By the time its height has been
-// reduced to _kAppBarMidHeight, its layout is horizontal, only one section
-// heading is visible, and the section's list of details is visible below the
-// heading. The appbar's height can be reduced to no more than _kAppBarMinHeight.
 const double _kAppBarMinHeight = 90.0;
 const double _kAppBarMidHeight = 256.0;
-// The AppBar's max height depends on the screen, see _AnimationDemoHomeState._buildBody()
 
-// Initially occupies the same space as the status bar and gets smaller as
-// the primary scrollable scrolls upwards.
-// TODO(hansmuller): it would be worth adding something like this to the framework.
 class _RenderStatusBarPaddingSliver extends RenderSliver {
   _RenderStatusBarPaddingSliver({
     @required double maxHeight,
