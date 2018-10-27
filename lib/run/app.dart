@@ -1,14 +1,14 @@
+import 'package:aristys_app/animation/home.dart';
+import 'package:aristys_app/src/colors.dart';
+import 'package:aristys_app/src/cut_corners_border.dart';
 import 'package:flutter/material.dart';
-import 'home.dart';
-import 'colors.dart';
-import 'supplemental/cut_corners_border.dart';
 
 class AristysApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Aristys',
-      home: HomePage(),
+      home: Home(),
       initialRoute: '/home',
       onGenerateRoute: _getRoute,
     );
@@ -21,7 +21,7 @@ class AristysApp extends StatelessWidget {
 
     return MaterialPageRoute<void>(
       settings: settings,
-      builder: (BuildContext context) => HomePage(),
+      builder: (BuildContext context) => Home(),
     );
   }
 }
