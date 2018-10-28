@@ -1,4 +1,4 @@
-import 'package:aristys_app/animation/home.dart';
+import 'package:aristys_app/ui/home/home.dart';
 import 'package:aristys_app/src/colors.dart';
 import 'package:aristys_app/src/cut_corners_border.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,7 @@ class AristysApp extends StatelessWidget {
       home: Home(),
       initialRoute: '/home',
       onGenerateRoute: _getRoute,
+//      theme: _kAristysTheme,
     );
   }
 

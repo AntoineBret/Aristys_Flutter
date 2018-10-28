@@ -1,9 +1,14 @@
 import 'dart:math' as math;
 
+import 'package:aristys_app/sections/sections.dart';
+import 'package:aristys_app/ui/agency/agency.dart';
+import 'package:aristys_app/ui/blog/blog.dart';
+import 'package:aristys_app/ui/contact/contact.dart';
+import 'package:aristys_app/ui/customers/customers.dart';
+import 'package:aristys_app/ui/expertises/expertises.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'package:aristys_app/sections/sections.dart';
 import 'widgets.dart';
 
 const Color _kAppBackgroundColor = Color(0xFF1A237E);
@@ -511,14 +516,6 @@ class _HomeState extends State<Home> {
     return false;
   }
 
-  Iterable<Widget> _detailItemsFor(Section section) {
-    final Iterable<Widget> detailItems =
-        section.details.map((SectionDetail detail) {
-      return SectionDetailView(detail: detail);
-    });
-    return ListTile.divideTiles(context: context, tiles: detailItems);
-  }
-
   Iterable<Widget> _allHeadingItems(double maxHeight, double midScrollOffset) {
     final List<Widget> sectionCards = <Widget>[];
     for (int index = 0; index < allSections.length; index++) {
@@ -615,12 +612,13 @@ class _HomeState extends State<Home> {
                       },
                       child: PageView(
                         controller: _detailsPageController,
-                        children: allSections.map((Section section) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: _detailItemsFor(section).toList(),
-                          );
-                        }).toList(),
+                        children: [
+                          AgencyPage(),
+                          ExpertisesPage(),
+                          CustomersPage(),
+                          BlogPage(),
+                          ContactPage(),
+                        ],
                       ),
                     ),
                   ),
@@ -633,3 +631,13 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
