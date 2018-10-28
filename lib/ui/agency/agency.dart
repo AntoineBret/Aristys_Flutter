@@ -10,7 +10,7 @@ class _AgencyPageState extends State<AgencyPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new Container(
-
+      child: new Text("test"),
       ),
     );
   }
