@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +14,7 @@ class _BlogPageState extends State<BlogPage> {
   String url =
       'https://public-api.wordpress.com/rest/v1.1/sites/blogaristysweb.wordpress.com/posts/';
   List data = [];
+  var formatter = new DateFormat('yyyy-MM-dd');
 
   @override
   void initState() {
@@ -51,7 +52,7 @@ class _BlogPageState extends State<BlogPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(data[i]["date"]),
+                      Text((data[i]["date"])),
                       SizedBox(height: 8.0),
                       Text(data[i]["title"]),
                     ],
@@ -68,39 +69,3 @@ class _BlogPageState extends State<BlogPage> {
     );
   }
 }
-
-//class SecondPage extends StatelessWidget {
-//  SecondPage(this.data);
-//
-//  final data;
-//
-//  @override
-//  Widget build(BuildContext context) => new Scaffold(
-//      appBar: new AppBar(title: new Text('Second Page')),
-//      body: new Center(
-//        child: new Container(
-//          width: 150.0,
-//          height: 150.0,
-//          decoration: new BoxDecoration(
-//            color: const Color(0xff7c94b6),
-//            image: new DecorationImage(
-//              image: new NetworkImage(data["featured_image"]),
-//              fit: BoxFit.cover,
-//            ),
-//            borderRadius: new BorderRadius.all(new Radius.circular(75.0)),
-//            border: new Border.all(
-//              color: Colors.red,
-//              width: 4.0,
-//            ),
-//          ),
-//        ),
-//      ));
-//}
-
-//onTap: () {
-//Navigator.push(
-//context,
-//new MaterialPageRoute(
-//builder: (BuildContext context) =>
-//new SecondPage(data[i])));
-//},
