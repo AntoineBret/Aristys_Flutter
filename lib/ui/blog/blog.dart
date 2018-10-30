@@ -1,8 +1,12 @@
-import 'dart:async';
-import 'dart:convert';
-import 'package:intl/intl.dart';
+import 'package:aristys_app/model/post_model.dart';
+import 'package:aristys_app/services/post_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class BlogPage extends StatefulWidget {
@@ -11,61 +15,60 @@ class BlogPage extends StatefulWidget {
 }
 
 class _BlogPageState extends State<BlogPage> {
-  String url =
-      'https://public-api.wordpress.com/rest/v1.1/sites/blogaristysweb.wordpress.com/posts/';
-  List data = [];
-  var formatter = new DateFormat('yyyy-MM-dd');
-
-  @override
-  void initState() {
-    this.makeRequest();
-  }
-
-  Future<String> makeRequest() async {
-    var response = await http
-        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-
-    setState(() {
-      var extractdata = json.decode(response.body);
-      data = extractdata["posts"];
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StaggeredGridView.countBuilder(
-        crossAxisCount: 4,
-        itemCount: data.length,
-        itemBuilder: (BuildContext context, i) {
-          return Card(
-            elevation: 8.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                AspectRatio(
-                  aspectRatio: 18.0 / 11.0,
-                  child: Image.network(data[i]["featured_image"]),
+        body: FutureBuilder<List<Post>>(
+      future: loadAllPosts(new http.Client()),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) print(snapshot.error);
+
+        return snapshot.hasData
+            ? new PostList(posts: snapshot.data)
+            : new Center(child: new CircularProgressIndicator());
+      },
+    ));
+  }
+}
+
+class PostList extends StatelessWidget {
+  final List<Post> posts;
+
+  PostList({Key key, this.posts}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return new StaggeredGridView.countBuilder(
+      crossAxisCount: 4,
+      itemCount: posts.length,
+      itemBuilder: (BuildContext context, i) {
+        return Card(
+          elevation: 8.0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              AspectRatio(
+                aspectRatio: 18.0 / 11.0,
+                child: Image.network(posts[i].imgURL),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(posts[i].date),
+                    SizedBox(height: 8.0),
+                    Text(posts[i].title),
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text((data[i]["date"])),
-                      SizedBox(height: 8.0),
-                      Text(data[i]["title"]),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-        staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
-        mainAxisSpacing: 4.0,
-        crossAxisSpacing: 4.0,
-      ),
+              ),
+            ],
+          ),
+        );
+      },
+      staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+      mainAxisSpacing: 4.0,
+      crossAxisSpacing: 4.0,
     );
   }
 }
