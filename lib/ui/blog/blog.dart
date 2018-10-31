@@ -1,12 +1,10 @@
+import 'package:aristys_app/data/repository.dart';
 import 'package:aristys_app/model/post_model.dart';
 import 'package:aristys_app/services/post_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class BlogPage extends StatefulWidget {
@@ -19,7 +17,7 @@ class _BlogPageState extends State<BlogPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: FutureBuilder<List<Post>>(
-      future: loadAllPosts(new http.Client()),
+      future: Repository.get().getPosts(),
       builder: (context, snapshot) {
         if (snapshot.hasError) print(snapshot.error);
 

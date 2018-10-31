@@ -1,17 +1,44 @@
+import 'package:meta/meta.dart';
+
 class Post {
+  static final db_id = "ID";
+  static final db_title = "title";
+  static final db_date = "date";
+  static final db_imgURL = "featured_image";
+  static final db_content = "content";
+
+  String id;
   String title;
   String date;
   String imgURL;
   String content;
+  bool starred;
 
-  Post({this.title, this.date, this.imgURL, this.content});
+  Post({
+    @required this.id,
+    @required this.title,
+    @required this.date,
+    @required this.imgURL,
+    @required this.content,
+    this.starred = false,
+  });
 
-  factory Post.fromJson(Map<String, dynamic> json) {
-    return new Post(
-      title: json['title'] as String,
-      date: json['date'] as String,
-      imgURL: json['featured_image'] as String,
-      content: json['content'] as String,
-    );
+  Post.fromMap(Map<String, dynamic> map): this(
+    id: map[db_id],
+    title: map[db_title],
+    date: map[db_date],
+    imgURL: map[db_imgURL],
+    content: map[db_content],
+  );
+
+  // Currently not used
+  Map<String, dynamic> toMap() {
+    return {
+      db_id: id,
+      db_title: title,
+      db_date: date,
+      db_imgURL: imgURL,
+      db_content: content,
+    };
   }
 }
