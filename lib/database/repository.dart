@@ -1,15 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:aristys_app/data/database.dart';
+import 'package:aristys_app/database/database.dart';
 import 'package:aristys_app/model/post_model.dart';
 import 'package:http/http.dart' as http;
 
-/// A class similar to http.Response but instead of a String describing the body
-/// it already contains the parsed Dart-Object
 class ParsedResponse<T> {
   ParsedResponse(this.statusCode, this.body);
-
   final int statusCode;
   final T body;
 
@@ -18,9 +15,11 @@ class ParsedResponse<T> {
   }
 }
 
+
 final int NO_INTERNET = 404;
 
 class Repository {
+
   static final Repository _repo = new Repository._internal();
 
   PostDatabase database;
@@ -33,69 +32,56 @@ class Repository {
     database = PostDatabase.get();
   }
 
-  Future init() async {
+  Future init() async{
     return await database.init();
   }
 
-  /// Fetches the posts from the WordPress Api with the query parameter being input.
-  /// If a post also exists in the local storage that version of the post will be used instead
-  Future<ParsedResponse<List<Post>>> getPosts() async {
+  Future<ParsedResponse<List<Post>>> getPosts() async{
     //http request, catching error like no internet connection.
     //If no internet is available for example response is
-    http.Response response = await http
-        .get(
-            "https://public-api.wordpress.com/rest/v1.1/sites/blogaristysweb.wordpress.com/posts/")
-        .catchError((resp) {});
+    http.Response response = await http.get("https://public-api.wordpress.com/rest/v1.1/sites/blogaristysweb.wordpress.com/posts/")
+      .catchError((resp) {});
 
-    if (response == null) {
+    if(response == null) {
       return new ParsedResponse(NO_INTERNET, []);
     }
 
     //If there was an error return an empty list
-    if (response.statusCode < 200 || response.statusCode >= 300) {
+    if(response.statusCode < 200 || response.statusCode >= 300) {
       return new ParsedResponse(response.statusCode, []);
     }
-
     // Decode and go to the items part where the necessary book information is
     List<dynamic> list = jsonDecode(response.body)['posts'];
+    print(response.body);
 
     Map<String, Post> networkPosts = {};
 
-    for (dynamic jsonPost in list) {
+    for(dynamic jsonPost in list) {
       Post post = parseNetworkPost(jsonPost);
-      networkPosts[post.id] = post;
+      networkPosts[post.title] = post;
     }
 
     //Adds information (if available) from database
-    List<Post> databasePost =
-        await database.getPosts([]..addAll(networkPosts.keys));
-    for (Post post in databasePost) {
-      networkPosts[post.id] = post;
+    List<Post> databasePost = (await database.getAllPosts());
+    for(Post post in databasePost) {
+      networkPosts[post.title] = post;
     }
-    return new ParsedResponse(
-        response.statusCode, []..addAll(networkPosts.values));
+
+    return new ParsedResponse(response.statusCode, []..addAll(networkPosts.values));
   }
 
   Post parseNetworkPost(jsonPost) {
-     return new Post(
-      title: jsonPost["title"],
+
+    return new Post(
       date: jsonPost["date"],
-      id: jsonPost["id"],
+      title: jsonPost["title"],
       imgURL: jsonPost["featured_image"],
       content: jsonPost["content"],
     );
   }
 
-  Future updatePost(Post post) async {
-    await database.updatePost(post);
-  }
-
-  Future close() async {
-    return database.close();
-  }
-
+  //Call getAllPosts() in database.dart for rawQuery in db
   Future<List<Post>> getAllPosts()  {
     return database.getAllPosts();
   }
-
 }

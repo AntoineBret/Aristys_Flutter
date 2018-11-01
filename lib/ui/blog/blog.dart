@@ -1,10 +1,11 @@
-import 'package:aristys_app/data/repository.dart';
+import 'package:aristys_app/database/repository.dart';
 import 'package:aristys_app/model/post_model.dart';
+import 'package:aristys_app/utils/utils.dart';
+import 'package:aristys_app/widget/PostCard.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
-import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
+import 'package:aristys_app/ui/blog/post_details.dart';
 
 class BlogPage extends StatefulWidget {
   @override
@@ -13,12 +14,17 @@ class BlogPage extends StatefulWidget {
 
 class _BlogPageState extends State<BlogPage> {
   @override
+  void initState() {
+    super.initState();
+    Repository.get().getPosts();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: FutureBuilder<List<Post>>(
-      future: Repository.get().getPosts(),
-      builder: (BuildContext context, AsyncSnapshot<List<Post>> snapshot) {
-        List<Post> posts = [];
+      future: Repository.get().getAllPosts(),
+      builder: (context, snapshot) {
         if (snapshot.hasError) print(snapshot.error);
 
         return snapshot.hasData
@@ -39,30 +45,20 @@ class PostList extends StatelessWidget {
     return new StaggeredGridView.countBuilder(
       crossAxisCount: 4,
       itemCount: posts.length,
-      itemBuilder: (BuildContext context, i) {
-        return Card(
-          elevation: 8.0,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              AspectRatio(
-                aspectRatio: 18.0 / 11.0,
-                child: Image.network(posts[i].imgURL),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(posts[i].date),
-                    SizedBox(height: 8.0),
-                    Text(posts[i].title),
-                  ],
-                ),
-              ),
-            ],
-          ),
+      itemBuilder: (BuildContext context, int index) {
+        return new PostCard(
+          post: posts[index],
+          onCardClick: (){
+            Navigator.of(context).push(
+              new FadeRoute(
+                builder: (BuildContext context) => new PostDetailsPage(),
+                settings: new RouteSettings(name: '/details', isInitialRoute: false),
+              ));
+          },
+          onStarClick: (){
+          },
         );
+        //  return new BookCardMinimalistic(_items[index]);
       },
       staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
       mainAxisSpacing: 4.0,
