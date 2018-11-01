@@ -1,6 +1,5 @@
 import 'package:aristys_app/data/repository.dart';
 import 'package:aristys_app/model/post_model.dart';
-import 'package:aristys_app/services/post_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -18,7 +17,8 @@ class _BlogPageState extends State<BlogPage> {
     return Scaffold(
         body: FutureBuilder<List<Post>>(
       future: Repository.get().getPosts(),
-      builder: (context, snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<Post>> snapshot) {
+        List<Post> posts = [];
         if (snapshot.hasError) print(snapshot.error);
 
         return snapshot.hasData
