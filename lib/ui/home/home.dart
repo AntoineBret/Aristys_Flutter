@@ -8,7 +8,7 @@ import 'package:aristys_app/ui/customers/customers.dart';
 import 'package:aristys_app/ui/expertises/expertises.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
+import 'package:aristys_app/database/repository.dart';
 import 'widgets.dart';
 
 const Color _kAppBackgroundColor = Color(0xFF1A237E);
@@ -448,6 +448,12 @@ class _HomeState extends State<Home> {
   final PageController _detailsPageController = PageController();
   ScrollPhysics _headingScrollPhysics = const NeverScrollableScrollPhysics();
   ValueNotifier<double> selectedIndex = ValueNotifier<double>(0.0);
+
+  @override
+  void initState() {
+    super.initState();
+    Repository.get().getPosts();
+  }
 
   @override
   Widget build(BuildContext context) {

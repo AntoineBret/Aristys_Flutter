@@ -13,11 +13,6 @@ class BlogPage extends StatefulWidget {
 }
 
 class _BlogPageState extends State<BlogPage> {
-  @override
-  void initState() {
-    super.initState();
-    Repository.get().getPosts();
-  }
 
   @override
   Widget build(BuildContext context) {
