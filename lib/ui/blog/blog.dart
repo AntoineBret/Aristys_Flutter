@@ -46,7 +46,7 @@ class PostList extends StatelessWidget {
           onCardClick: (){
             Navigator.of(context).push(
               new FadeRoute(
-                builder: (BuildContext context) => new PostDetailsPage(),
+                builder: (BuildContext context) => new PostDetailsPage(posts[index]),
                 settings: new RouteSettings(name: '/details', isInitialRoute: false),
               ));
           },

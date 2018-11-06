@@ -19,7 +19,7 @@ class AristysApp extends StatelessWidget {
       store:store,
       child: new MaterialApp(
         title: 'Aristys app',
-        theme: _kAristysTheme,
+//        theme: _kAristysTheme,
         routes: {
           '/': (BuildContext context) => new Home(),
         },
