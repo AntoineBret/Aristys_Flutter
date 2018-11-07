@@ -1,10 +1,10 @@
 import 'package:aristys_app/model/post_model.dart';
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
-
 class PostCard extends StatefulWidget {
-
   PostCard({
     this.post,
     @required this.onCardClick,
@@ -21,7 +21,6 @@ class PostCard extends StatefulWidget {
 }
 
 class PostCardState extends State<PostCard> {
-
   @override
   Widget build(BuildContext context) {
     return new GestureDetector(
@@ -32,7 +31,7 @@ class PostCardState extends State<PostCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             AspectRatio(
-              aspectRatio: 18.0 / 11.0,
+              aspectRatio: 23.0 / 11.0,
               child: Image.network(widget.post.imgURL),
             ),
             Padding(
@@ -40,9 +39,9 @@ class PostCardState extends State<PostCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(widget.post.date),
+                  Text(_getDateFormatted(widget.post.date)),
                   SizedBox(height: 8.0),
-                  Text(widget.post.title),
+                  Text(_parseHtmlString(widget.post.title)),
                 ],
               ),
             ),
@@ -51,4 +50,18 @@ class PostCardState extends State<PostCard> {
       ),
     );
   }
+}
+
+String _parseHtmlString(String htmlString) {
+  var document = parse(htmlString);
+  String parsedString = parse(document.body.text).documentElement.text;
+  return parsedString;
+}
+
+String _getDateFormatted(String dateString) {
+  String dateLocalString = "";
+  DateTime date = DateTime.parse(dateString);
+  DateFormat dfLocal = new DateFormat("yMd");
+  dateLocalString = dfLocal.format(date);
+  return dateLocalString;
 }

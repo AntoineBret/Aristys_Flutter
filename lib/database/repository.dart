@@ -40,7 +40,7 @@ class Repository {
     //If no internet is available for example response is
     http.Response response = await http
         .get(
-            "https://public-api.wordpress.com/rest/v1.1/sites/blogaristysweb.wordpress.com/posts/")
+            "https://public-api.wordpress.com/rest/v1.1/sites/blogaristysweb.wordpress.com/posts?per_page=100")
         .catchError((resp) {});
 
     if (response == null) {
@@ -61,12 +61,6 @@ class Repository {
       Post post = parseNetworkPost(jsonPost);
       Repository.get().updatePosts(post);
     }
-
-    //Adds information (if available) from database
-//    List<Post> databasePost = (await database.getAllPosts());
-//    for (Post post in databasePost) {
-//      networkPosts[post.title] = post;
-//    }
 
     return new ParsedResponse(
         response.statusCode, []..addAll(networkPosts.values));
