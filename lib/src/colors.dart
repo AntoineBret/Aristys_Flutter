@@ -7,3 +7,4 @@ const kAristysBlue400 = const Color(0xFF29B6F6);
 
 const kAristysSurfaceWhite = const Color(0xFFFFFBFA);
 const kAristysBackgroundWhite = Colors.white;
+const kAristysAltDarkGrey = const Color(0xFF414149);

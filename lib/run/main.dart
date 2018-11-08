@@ -19,7 +19,7 @@ class AristysApp extends StatelessWidget {
       store:store,
       child: new MaterialApp(
         title: 'Aristys app',
-//        theme: _kAristysTheme,
+        theme: _kAristysTheme,
         routes: {
           '/': (BuildContext context) => new Home(),
         },
@@ -31,15 +31,18 @@ class AristysApp extends StatelessWidget {
 final ThemeData _kAristysTheme = _buildAristysTheme();
 
 ThemeData _buildAristysTheme() {
-  final ThemeData base = ThemeData.dark();
+  final ThemeData base = ThemeData.light();
   return base.copyWith(
-    accentColor: kAristysBlue400,
-    primaryColor: kAristysBlue100,
+    accentColor: kAristysAltDarkGrey,
+    primaryColor: kAristysAltDarkGrey,
     buttonColor: kAristysBlue300,
-    scaffoldBackgroundColor: kAristysBlue50,
-    cardColor: kAristysBlue50,
-    textSelectionColor: kAristysBlue50,
-    errorColor: kAristysBlue50,
+    //Background color of layout
+    scaffoldBackgroundColor: kAristysSurfaceWhite,
+    //Background color of each card
+    cardColor: kAristysSurfaceWhite,
+    textSelectionColor: kAristysBlue100,
+    errorColor: kAristysBlue100,
+    //Text theme > details in _buildAristysTextTheme
     textTheme: _buildAristysTextTheme(base.textTheme),
     primaryTextTheme: _buildAristysTextTheme(base.primaryTextTheme),
     accentTextTheme: _buildAristysTextTheme(base.accentTextTheme),
@@ -55,16 +58,22 @@ ThemeData _buildAristysTheme() {
 TextTheme _buildAristysTextTheme(TextTheme base){
   return base.copyWith(
     headline: base.headline.copyWith(
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w400,
     ),
     title: base.title.copyWith(
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w300,
+      fontSize: 16.0,
+    ),
+    subtitle: base.subtitle.copyWith(
+      fontWeight: FontWeight.w300,
       fontSize: 14.0,
     ),
   ).apply(
-    fontFamily:'' ,
-    displayColor: kAristysSurfaceWhite,
-    bodyColor: kAristysSurfaceWhite,
+    //Character font > get .ttf
+  fontFamily: 'Rubik',
+    //Text color
+    displayColor: kAristysAltDarkGrey,
+    bodyColor: kAristysAltDarkGrey,
   );
 }
 
