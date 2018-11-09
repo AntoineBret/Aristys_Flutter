@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:aristys_app/database/repository.dart';
 import 'package:aristys_app/sections/sections.dart';
 import 'package:aristys_app/ui/agency/agency.dart';
 import 'package:aristys_app/ui/blog/blog.dart';
@@ -8,7 +9,7 @@ import 'package:aristys_app/ui/customers/customers.dart';
 import 'package:aristys_app/ui/expertises/expertises.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:aristys_app/database/repository.dart';
+
 import 'widgets.dart';
 
 const Color _kAppBackgroundColor = Color(0xFF1A237E);
@@ -466,14 +467,6 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _handleBackButton(double midScrollOffset) {
-    if (_scrollController.offset >= midScrollOffset)
-      _scrollController.animateTo(0.0,
-          curve: _kScrollCurve, duration: _kScrollDuration);
-    else
-      Navigator.maybePop(context);
-  }
-
   // Only enable paging for the heading when the user has scrolled to midScrollOffset.
   // Paging is enabled/disabled by setting the heading's PageView scroll physics.
   bool _handleScrollNotification(
@@ -564,6 +557,13 @@ class _HomeState extends State<Home> {
     final double statusBarHeight = mediaQueryData.padding.top;
     final double screenHeight = mediaQueryData.size.height;
     final double appBarMaxHeight = screenHeight - statusBarHeight;
+    final List<Widget> pages = [
+      AgencyPage(),
+      ExpertisesPage(),
+      CustomersPage(),
+      BlogPage(),
+      ContactPage(),
+    ];
 
     // The scroll offset that reveals the appBarMidHeight appbar.
     final double appBarMidScrollOffset =
@@ -599,6 +599,7 @@ class _HomeState extends State<Home> {
                             _headingPageController, _detailsPageController);
                       },
                       child: PageView(
+                        //Header
                         physics: _headingScrollPhysics,
                         controller: _headingPageController,
                         children: _allHeadingItems(
@@ -616,15 +617,11 @@ class _HomeState extends State<Home> {
                         return _handlePageNotification(notification,
                             _detailsPageController, _headingPageController);
                       },
-                      child: PageView(
+                      child: PageView.builder(
                         controller: _detailsPageController,
-                        children: [
-                          AgencyPage(),
-                          ExpertisesPage(),
-                          CustomersPage(),
-                          BlogPage(),
-                          ContactPage(),
-                        ],
+                        itemCount: pages.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            pages[index],
                       ),
                     ),
                   ),
@@ -637,13 +634,3 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-

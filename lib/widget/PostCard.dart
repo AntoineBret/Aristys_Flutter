@@ -23,8 +23,6 @@ class PostCard extends StatefulWidget {
 class PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return new GestureDetector(
       onTap: widget.onCardClick,
       child: new Card(
@@ -33,7 +31,7 @@ class PostCardState extends State<PostCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             AspectRatio(
-              aspectRatio: 28.0 / 11.0,
+              aspectRatio: 23.0 / 11.0,
               child: Image.network(widget.post.imgURL),
             ),
             Padding(
@@ -41,15 +39,9 @@ class PostCardState extends State<PostCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                      _getDateFormatted(widget.post.date),
-                    style: theme.textTheme.subtitle,
-                  ),
+                  Text(_getDateFormatted(widget.post.date)),
                   SizedBox(height: 8.0),
-                  Text(
-                      _parseHtmlString(widget.post.title),
-                    style: theme.textTheme.title,
-                  ),
+                  Text(_parseHtmlString(widget.post.title)),
                 ],
               ),
             ),

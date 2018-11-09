@@ -51,7 +51,7 @@ class PostDatabase {
   //Select all posts from WordPress API in database
   Future<List<Post>> getAllPosts() async {
     var db = await _getDb();
-    var result = await db.rawQuery('SELECT * FROM $tableName');
+    var result = await db.rawQuery('SELECT * FROM $tableName ORDER BY ID DESC');
     if (result.length == 0) return [];
     List<Post> posts = [];
     for (Map<String, dynamic> map in result) {

@@ -13,7 +13,6 @@ class BlogPage extends StatefulWidget {
 }
 
 class _BlogPageState extends State<BlogPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +39,6 @@ class PostList extends StatelessWidget {
     return new StaggeredGridView.countBuilder(
       crossAxisCount: 4,
       itemCount: posts.length,
-      reverse: true,
       itemBuilder: (BuildContext context, index) {
         return new PostCard(
           post: posts[index],
