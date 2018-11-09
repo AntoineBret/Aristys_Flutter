@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:aristys_app/database/repository.dart';
 import 'package:aristys_app/sections/sections.dart';
 import 'package:aristys_app/ui/agency/agency.dart';
 import 'package:aristys_app/ui/blog/blog.dart';
@@ -9,7 +8,7 @@ import 'package:aristys_app/ui/customers/customers.dart';
 import 'package:aristys_app/ui/expertises/expertises.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
+import 'package:aristys_app/database/repository.dart';
 import 'widgets.dart';
 
 const Color _kAppBackgroundColor = Color(0xFF1A237E);
@@ -557,13 +556,6 @@ class _HomeState extends State<Home> {
     final double statusBarHeight = mediaQueryData.padding.top;
     final double screenHeight = mediaQueryData.size.height;
     final double appBarMaxHeight = screenHeight - statusBarHeight;
-    final List<Widget> pages = [
-      AgencyPage(),
-      ExpertisesPage(),
-      CustomersPage(),
-      BlogPage(),
-      ContactPage(),
-    ];
 
     // The scroll offset that reveals the appBarMidHeight appbar.
     final double appBarMidScrollOffset =
@@ -598,8 +590,7 @@ class _HomeState extends State<Home> {
                         return _handlePageNotification(notification,
                             _headingPageController, _detailsPageController);
                       },
-                      child: PageView(
-                        //Header
+                      child: PageView( //Header
                         physics: _headingScrollPhysics,
                         controller: _headingPageController,
                         children: _allHeadingItems(
@@ -617,11 +608,15 @@ class _HomeState extends State<Home> {
                         return _handlePageNotification(notification,
                             _detailsPageController, _headingPageController);
                       },
-                      child: PageView.builder(
+                      child: PageView(
                         controller: _detailsPageController,
-                        itemCount: pages.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            pages[index],
+                        children: [
+                          AgencyPage(),
+                          ExpertisesPage(),
+                          CustomersPage(),
+                          BlogPage(),
+                          ContactPage(),
+                        ],
                       ),
                     ),
                   ),
@@ -634,3 +629,13 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+

@@ -31,11 +31,11 @@ class _BlogPageState extends State<BlogPage> {
 
 class PostList extends StatelessWidget {
   final List<Post> posts;
-
   PostList({Key key, this.posts}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    //Todo: make StaggeredGridView collaps SliverPersistentHeader when user is at the top of the list
     return new StaggeredGridView.countBuilder(
       crossAxisCount: 4,
       itemCount: posts.length,
